@@ -24,7 +24,7 @@ function updateProject (project) {
 	let changed = false;
 
 	// Go through each mapping in our debug map and figure out if we need to clone it.
-	for (let mapping of utilities.getMappings().Debug) {
+	for (let mapping of utilities.getMappings()) {
 
 		// Do we have the clone already?
 		const buildConfig = project.getBuildConfigByName(mapping);
@@ -44,7 +44,7 @@ function updateProject (project) {
 				const clone = JSON.parse(JSON.stringify(debugConfig));
 				clone.name = mapping;
 
-				const configurationUuid = generateUuid();
+				const configurationUuid = utilities.generateUuid();
 				const configurationCommentKey = `${configurationUuid}_comment`;
 
 				configs[configurationUuid] = clone;
