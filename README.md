@@ -24,6 +24,7 @@ Once the package is installed in your project, you just need to configure it by 
 {
   "name": "your-awesome-app",
   "version": "1.0.0",
+  /* etc */
   "schemes": {
       "Debug": ["Staging", "Preflight"]
   }
@@ -34,30 +35,41 @@ This configuration will copy the "Debug" build configuration to "Staging" and "P
 
 ## What Then?
 
-The package will automatically run this script and clean up your XCode project files on `postinstall`. This means you shouldn't need to do anything further to make this work than just install your project dependencies again.
+The package will automatically run this script to do two things on `postinstall`:
+- Swap its own version of react-native-xcode.sh in instead of the stock on that assumes all debug schemes are named 'Debug'.
+- Add your build configurations to all library xcode projects. 
+
+This means you shouldn't need to do anything further to make this work than the above.
 
 ## Running Manually
 
-You can run it on demand by running `react-native-schemes-manager` from your project's directory. The best way to do this is add to your `package.json` scripts section like so:
+You can run the two parts of this package on demand by running either:
+
+- `react-native-schemes-manager fix-libraries`: Adds your build configurations to all library xcode projects.
+- `react-native-schemes-manager fix-script`: Swaps a schemes aware build script in instead of the stock react native one.
+
+The best way to do this is add to your `package.json` scripts section like so:
 
 ```json
 {
   "name": "your-awesome-app",
   "version": "1.0.0",
+  /* etc */
   "scripts": {
-      "fix-xcode-projects": "react-native-schemes-manager"
+      "fix-libraries": "react-native-schemes-manager fix-libraries",
+      "fix-script": "react-native-schemes-manager fix-script"
   }
 }
 ```
 
-You can then `yarn run fix-xcode-projects` or `npm run fix-xcode-projects`.
+You can then `yarn run fix-libraries` or `npm run fix-libraries` which will run the script.
 
 ## Further Reading
 
 These are some great articles about related topics in case you're hungry for more:
 
 - [📝 Migrating iOS App Through Multiple Environments](http://www.blackdogfoundry.com/blog/migrating-ios-app-through-multiple-environments/): Explains how XCode is handling this situation in a detailed way.
-- [📝 How to set up multiple schemes & configurations in Xcode for your React Native iOS app](https://zeemee.engineering/how-to-set-up-multiple-schemes-configurations-in-xcode-for-your-react-native-ios-app-7da4b5237966#.vsq9mlgv8): The inspiration and approach for this package, unfortunately written in Ruby. I wanted a pure Node build pipeline.
+- [📝 How to set up multiple schemes & configurations in Xcode for your React Native iOS app](https://zeemee.engineering/how-to-set-up-multiple-schemes-configurations-in-xcode-for-your-react-native-ios-app-7da4b5237966#.vsq9mlgv8): The inspiration and approach for this package, unfortunately written in Ruby. I wanted a pure Node build pipeline and I didn't want to have to muck around with per package configuration.
 
 ## License
 
