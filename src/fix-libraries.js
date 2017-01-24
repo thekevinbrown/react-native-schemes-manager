@@ -63,11 +63,11 @@ function updateProject (project) {
 	return changed;
 }
 
-module.exports = function findAndFix() {
+module.exports = function findAndFix () {
 	// Find all of the pbxproj files we care about.
 	const pattern = './node_modules/**/*.xcodeproj/project.pbxproj';
 
 	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
 		return updateProject(project);
 	});
-}
+};

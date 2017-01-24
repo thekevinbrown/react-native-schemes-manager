@@ -7,7 +7,8 @@
     "react-native-schemes-manager": "index.js"
   },
   "scripts": {
-    "postinstall": "react-native-schemes-manager fix-script && react-native-schemes-manager fix-libraries"
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -35,5 +36,11 @@
     "uuid": "^3.0.1",
     "xcode": "^0.9.1",
     "yargs": "^6.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.0",
+    "eslint-config-keystone": "^3.0.0",
+    "eslint-config-keystone-react": "^1.0.0",
+    "eslint-plugin-react": "^6.9.0"
   }
 }
