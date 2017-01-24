@@ -10,7 +10,6 @@ module.exports = {
         let nextPath;
 
         console.log(`searching in ${currentPath}`);
-        console.log(path.join(currentPath, 'ios/*.xcodeproj/project.pbxproj'));
 
         const pattern = 'ios/*.xcodeproj/project.pbxproj'
         let files = glob.sync(path.join(currentPath, pattern));
@@ -21,6 +20,8 @@ module.exports = {
             if (nextPath === currentPath) {
                 throw new Error('Could not locate a likely path.');
             }
+
+            currentPath = nextPath;
 
             files = glob.sync(path.join(currentPath, pattern));
         }
