@@ -13,7 +13,7 @@ module.exports = {
         console.log(path.join(currentPath, 'ios/*.xcodeproj/project.pbxproj'));
 
         const pattern = 'ios/*.xcodeproj/project.pbxproj'
-        const files = glob.sync(path.join(currentPath, pattern));
+        let files = glob.sync(path.join(currentPath, pattern));
 
         while (files.length === 0) {
             nextPath = path.resolve(currentPath, '..');
