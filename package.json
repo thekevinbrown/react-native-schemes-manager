@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/blargity/react-native-schemes-manager#readme",
   "dependencies": {
-    "chalk": "^1.1.3",
     "glob": "^7.1.1",
+    "path": "^0.12.7",
     "uuid": "^3.0.1",
     "xcode": "^0.9.1",
     "yargs": "^6.6.0"

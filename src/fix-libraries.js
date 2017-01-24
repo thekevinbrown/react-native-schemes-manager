@@ -1,17 +1,6 @@
-const chalk = require('chalk');
-const glob = require('glob');
-const fs = require('fs');
 const path = require('path');
-const uuid = require('uuid');
-const xcode = require('xcode');
 
-const mappings = {
-	Debug: ['Development', 'Staging', 'Preflight'],
-};
-
-function generateUuid () {
-	return uuid.v4().replace(/-/g, '').substr(0, 24).toUpperCase();
-}
+const utilities = require('./utilities');
 
 function configListForConfig (configLists, configUuid) {
 	for (const listUuid of Object.keys(configLists)) {
@@ -28,12 +17,14 @@ function configListForConfig (configLists, configUuid) {
 }
 
 function updateProject (project) {
+	console.log(path.dirname(path.relative(process.cwd(), project.filepath)));
+
 	const configs = project.pbxXCBuildConfigurationSection();
 	const configLists = project.pbxXCConfigurationList();
 	let changed = false;
 
 	// Go through each mapping in our debug map and figure out if we need to clone it.
-	for (let mapping of mappings.Debug) {
+	for (let mapping of utilities.getMappings().Debug) {
 
 		// Do we have the clone already?
 		const buildConfig = project.getBuildConfigByName(mapping);
@@ -61,11 +52,11 @@ function updateProject (project) {
 				configList.buildConfigurations.push({ value: configurationUuid, comment: mapping });
 			}
 
-			console.log(chalk.green(` ✔ [created] Debug -> ${mapping}`));
+			console.log(` ✔ [created] Debug -> ${mapping}`);
 
 			changed = true;
 		} else {
-			console.log(chalk.gray(` - [skipped] Debug -> ${mapping}`));
+			console.log(` - [skipped] Debug -> ${mapping}`);
 		}
 	}
 
@@ -74,23 +65,9 @@ function updateProject (project) {
 
 module.exports = function findAndFix() {
 	// Find all of the pbxproj files we care about.
-	glob('../../node_modules/**/*.xcodeproj/project.pbxproj', (err, files) => {
-		if (err) return console.log(chalk.bold.red(err));
+	const pattern = './node_modules/**/*.xcodeproj/project.pbxproj';
 
-		// Go through each project.
-		for (const projectPath of files) {
-
-			// Clean up the path for display. Just show from node_modules.
-			console.log(chalk.gray(`${path.relative(path.resolve(__dirname, '..'), path.resolve(projectPath, '..'))}`));
-
-			const project = xcode.project(projectPath);
-			project.parseSync();
-
-			// And fix it.
-			if (updateProject(project)) {
-				console.log('Saving project file.');
-				fs.writeFileSync(projectPath, project.writeSync());
-			}
-		}
+	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
+		return updateProject(project);
 	});
 }
