@@ -1,3 +1,5 @@
+# React Native Schemes Manager
+
 XCode environments without the stress. Use XCode schemes with React Native without pulling your hair out.
 
 [![Supported by Thinkmill](https://thinkmill.github.io/badge/heart.svg)](http://thinkmill.com.au/?utm_source=github&utm_medium=badge&utm_campaign=react-native-schemes-manager)
@@ -40,6 +42,20 @@ The package will automatically run this script to do two things on `postinstall`
 - Add your build configurations to all library xcode projects. 
 
 This means you shouldn't need to do anything further to make this work than the above.
+
+When you want to fix up your xcode projects or script, `yarn` or `npm i` after removing your `node_modules` directory should re-run both scripts automatically.
+
+## It's not working!
+
+A good starting point for troubleshooting is:
+- Completely quit XCode.
+- `rm -rf node_modules`
+- `yarn` or `npm i`
+- Re open XCode
+- Product -> Clean
+- Run
+
+If you're still having trouble, post an issue so we can look into it.
 
 ## Running Manually
 
