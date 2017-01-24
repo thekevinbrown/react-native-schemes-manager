@@ -11,7 +11,7 @@ yargs
 	for (const file of files) {
 		if (file.endsWith('utilities.js')) continue;
 
-		require(file)();
+		require('./' + file)();
 	}
 })
 .command('fix-libraries', 'add any missing build configurations to all xcode projects in node_modules', yargs => {

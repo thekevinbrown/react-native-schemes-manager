@@ -20,13 +20,16 @@ or
 npm install --save-dev react-native-schemes-manager
 ```
 
-Once the package is installed in your project, you just need to configure it by adding a `schemes` section to your `package.json`:
+Once the package is installed in your project, you just need to configure it by adding a `schemes` section to your `package.json` and adding a `postinstall` script which will re-run the script whenever you add or remove packages to/from your project:
 
 ```json
 {
   "name": "your-awesome-app",
   "version": "1.0.0",
-  "schemes": {
+	"scripts": {
+		"postinstall": "react-native-schemes-manager all"
+	},
+  "xcodeSchemes": {
       "Debug": ["Staging", "Preflight"]
   }
 }
@@ -38,7 +41,7 @@ This configuration will copy the "Debug" build configuration to "Staging" and "P
 
 The package will automatically run this script to do two things on `postinstall`:
 - Swap its own version of react-native-xcode.sh in instead of the stock on that assumes all debug schemes are named 'Debug'.
-- Add your build configurations to all library xcode projects. 
+- Add your build configurations to all library xcode projects.
 
 This means you shouldn't need to do anything further to make this work than the above.
 
@@ -62,6 +65,7 @@ You can run the two parts of this package on demand by running either:
 
 - `react-native-schemes-manager fix-libraries`: Adds your build configurations to all library xcode projects.
 - `react-native-schemes-manager fix-script`: Swaps a schemes aware build script in instead of the stock react native one.
+- `react-native-schemes-manager all`: Runs both scripts above.
 
 The best way to do this is add to your `package.json` scripts section like so:
 
@@ -70,13 +74,13 @@ The best way to do this is add to your `package.json` scripts section like so:
   "name": "your-awesome-app",
   "version": "1.0.0",
   "scripts": {
-      "fix-libraries": "react-native-schemes-manager fix-libraries",
-      "fix-script": "react-native-schemes-manager fix-script"
+      "fix-xcode": "react-native-schemes-manager all",
+      "postinstall": "react-native-schemes-manager all"
   }
 }
 ```
 
-You can then `yarn run fix-libraries` or `npm run fix-libraries` which will run the script.
+You can then `yarn run fix-xcode` or `npm run fix-xcode` which will run the script.
 
 ## Further Reading
 
