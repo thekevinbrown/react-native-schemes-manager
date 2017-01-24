@@ -1,3 +1,4 @@
+const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
 const xcode = require('xcode');
@@ -47,6 +48,15 @@ module.exports = {
         return uuid.v4().replace(/-/g, '').substr(0, 24).toUpperCase();
     },
     getMappings () {
+        this.getClosestLikelyReactNativeProjectPath(process.cwd(), (err, project) => {
+            const package = require(path.join(project, 'package.json'));
+
+            if (!package.schemes || !package.schemes.Debug) {
+                throw new Error('Please configure schemes on your project. For more information, see https://github.com/Thinkmill/react-native-schemes-manager/blob/master/README.md');
+            }
+
+            return package.schemes.Debug;
+        })
         return {
             Debug: ['Development', 'Staging', 'Preflight'],
         };

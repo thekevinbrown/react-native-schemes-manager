@@ -12,8 +12,9 @@
 
 set +x
 
-case "$CONFIGURATION" in
-  $DEVELOPMENT_BUILD_CONFIGURATIONS) #Development|Staging|Preflight
+eval 'case "$CONFIGURATION" in
+  '$DEVELOPMENT_BUILD_CONFIGURATIONS')
+    echo "Debug build!"
     # Speed up build times by skipping the creation of the offline package for debug
     # builds on the simulator since the packager is supposed to be running anyways.
     if [[ "$PLATFORM_NAME" = "iphonesimulator" ]]; then
@@ -28,12 +29,13 @@ case "$CONFIGURATION" in
     exit 1
     ;;
   *)
+    echo "Production build!"
     DEV=false
     ;;
-esac
+esac'
 
 # Path to react-native folder inside node_modules
-REACT_NATIVE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../node_modules/react-native" && pwd)"
+REACT_NATIVE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../react-native" && pwd)"
 
 # Xcode project file for React Native apps is located in ios/ subfolder
 cd ..
