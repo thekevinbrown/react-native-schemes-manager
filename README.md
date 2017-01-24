@@ -24,7 +24,6 @@ Once the package is installed in your project, you just need to configure it by 
 {
   "name": "your-awesome-app",
   "version": "1.0.0",
-  ...
   "schemes": {
       "Debug": ["Staging", "Preflight"]
   }
