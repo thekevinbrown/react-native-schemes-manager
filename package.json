@@ -1,0 +1,37 @@
+{
+  "name": "react-native-schemes-manager",
+  "version": "1.0.0-alpha",
+  "description": "Helps to manage React Native XCode projects that use multiple schemes to manage things like environment variables.",
+  "main": "index.js",
+  "bin": {
+    "react-native-schemes-manager": "index.js"
+  },
+  "scripts": {
+    "postinstall": "react-native-schemes-manager fix-script && react-native-schemes-manager fix-libraries"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blargity/react-native-schemes-manager.git"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "xcode",
+    "scheme",
+    "environment",
+    "variables"
+  ],
+  "author": "Kevin Brown",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blargity/react-native-schemes-manager/issues"
+  },
+  "homepage": "https://github.com/blargity/react-native-schemes-manager#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "glob": "^7.1.1",
+    "uuid": "^3.0.1",
+    "xcode": "^0.9.1",
+    "yargs": "^6.6.0"
+  }
+}
