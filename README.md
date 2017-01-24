@@ -26,7 +26,6 @@ Once the package is installed in your project, you just need to configure it by 
 {
   "name": "your-awesome-app",
   "version": "1.0.0",
-  /* etc */
   "schemes": {
       "Debug": ["Staging", "Preflight"]
   }
@@ -70,7 +69,6 @@ The best way to do this is add to your `package.json` scripts section like so:
 {
   "name": "your-awesome-app",
   "version": "1.0.0",
-  /* etc */
   "scripts": {
       "fix-libraries": "react-native-schemes-manager fix-libraries",
       "fix-script": "react-native-schemes-manager fix-script"
