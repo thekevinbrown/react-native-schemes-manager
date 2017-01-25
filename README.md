@@ -24,14 +24,14 @@ Once the package is installed in your project, you just need to configure it by 
 
 ```json
 {
-  "name": "your-awesome-app",
-  "version": "1.0.0",
+	"name": "your-awesome-app",
+	"version": "1.0.0",
 	"scripts": {
 		"postinstall": "react-native-schemes-manager all"
 	},
-  "xcodeSchemes": {
-      "Debug": ["Staging", "Preflight"]
-  }
+	"xcodeSchemes": {
+		"Debug": ["Staging", "Preflight"]
+	}
 }
 ```
 
@@ -74,12 +74,12 @@ The best way to give yourself a manual trigger for this is add to your `package.
 
 ```json
 {
-  "name": "your-awesome-app",
-  "version": "1.0.0",
-  "scripts": {
-      "fix-xcode": "react-native-schemes-manager all",
-      "postinstall": "react-native-schemes-manager all"
-  }
+	"name": "your-awesome-app",
+	"version": "1.0.0",
+	"scripts": {
+		"fix-xcode": "react-native-schemes-manager all",
+		"postinstall": "react-native-schemes-manager all"
+	}
 }
 ```
 
