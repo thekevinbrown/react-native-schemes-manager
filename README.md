@@ -87,7 +87,7 @@ You can then `yarn run fix-xcode` or `npm run fix-xcode` which will run the clea
 
 ## Uninstalling
 
-If you decide this isn't working out for you, we'd love to know why and to try to fix it. Please open an issue.
+If you decide this isn't working out for you, we'd love to know why and to try to fix it. Please [open an issue](https://github.com/Thinkmill/react-native-schemes-manager/issues/new).
 
 But if you still want to get rid of this and revert the changes to your project, you can follow these steps:
 
