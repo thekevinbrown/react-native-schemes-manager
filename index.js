@@ -19,6 +19,9 @@ yargs
 .command('hide-library-schemes', `hide any schemes that come from your node modules directory so they don't clutter up the menu.`, yargs => {
 	require('./src/hide-library-schemes')();
 })
+.command('verify-config', `check the configuration and ensure we have both a postinstall script and xcodeSchemes configurations.`, yargs => {
+	require('./src/verify-config')();
+})
 .demand(1, 'must provide a valid command')
 .help('h')
 .alias('h', 'help')
