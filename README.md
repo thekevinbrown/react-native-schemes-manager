@@ -20,7 +20,7 @@ or
 npm install --save-dev react-native-schemes-manager
 ```
 
-Once the package is installed in your project, you just need to configure it by adding a `schemes` section to your `package.json` and adding a `postinstall` script which will re-run the script whenever you add or remove packages to/from your project:
+Once the package is installed in your project, you just need to configure it by adding an `xcodeSchemes` section to your `package.json` and adding a `postinstall` script which will re-run the script whenever you add or remove packages to/from your project:
 
 ```json
 {
@@ -84,6 +84,33 @@ The best way to give yourself a manual trigger for this is add to your `package.
 ```
 
 You can then `yarn run fix-xcode` or `npm run fix-xcode` which will run the cleanup scripts on demand.
+
+## Uninstalling
+
+If you decide this isn't working out for you, we'd love to know why and to try to fix it. Please open an issue.
+
+But if you still want to get rid of this and revert the changes to your project, you can follow these steps:
+
+1. `yarn remove react-native-schemes-manager` or `npm remove react-native-schemes-manager --save-dev`
+1. Open your XCode project.
+1. Click on the project itself on the left sidebar to ensure it's selected.
+1. Click the "Build Phases" tab.
+1. Expand the "Bundle React Native code and images" phase.
+1. Change the script to:
+
+```
+export NODE_BINARY=node
+../node_modules/react-native/packager/react-native-xcode.sh
+```
+
+Then, you can revert the changes to the installed libraries by:
+
+1. Quitting xcode.
+1. `rm -rf node_modules`
+1. `yarn` or `npm i`
+1. Re-open xcode.
+
+You're back to where you started!
 
 ## Further Reading
 
