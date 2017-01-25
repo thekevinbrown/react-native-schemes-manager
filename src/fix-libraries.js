@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const path = require('path');
 
 const utilities = require('./utilities');
@@ -17,7 +18,6 @@ function configListForConfig (configLists, configUuid) {
 }
 
 function updateProject (project) {
-	console.log(path.dirname(path.relative(process.cwd(), project.filepath)));
 
 	const configs = project.pbxXCBuildConfigurationSection();
 	const configLists = project.pbxXCConfigurationList();
@@ -44,7 +44,7 @@ function updateProject (project) {
 				const clone = JSON.parse(JSON.stringify(debugConfig));
 				clone.name = mapping;
 
-				const configurationUuid = utilities.generateUuid();
+				const configurationUuid = project.generateUuid();
 				const configurationCommentKey = `${configurationUuid}_comment`;
 
 				configs[configurationUuid] = clone;
@@ -52,11 +52,11 @@ function updateProject (project) {
 				configList.buildConfigurations.push({ value: configurationUuid, comment: mapping });
 			}
 
-			console.log(` ✔ [created] Debug -> ${mapping}`);
+			console.log(chalk.gray(` ${chalk.green('✔')} [fix-libraries]: ${chalk.green('Debug -> ' + mapping + ' created')} in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
 
 			changed = true;
 		} else {
-			console.log(` - [skipped] Debug -> ${mapping}`);
+			console.log(chalk.gray(` - [fix-libraries]: Debug -> ${mapping} skipped in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
 		}
 	}
 

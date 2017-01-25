@@ -1,6 +1,6 @@
 {
   "name": "react-native-schemes-manager",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Helps to manage React Native XCode projects that use multiple schemes to manage things like environment variables.",
   "main": "index.js",
   "bin": {
@@ -31,9 +31,10 @@
   },
   "homepage": "https://github.com/Thinkmill/react-native-schemes-manager#readme",
   "dependencies": {
+    "chalk": "^1.1.3",
     "glob": "^7.1.1",
     "path": "^0.12.7",
-    "uuid": "^3.0.1",
+    "plist": "^2.0.1",
     "xcode": "^0.9.1",
     "yargs": "^6.6.0"
   },

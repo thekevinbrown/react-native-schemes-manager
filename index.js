@@ -1,17 +1,13 @@
-#! /usr/bin/env node
-const glob = require('glob');
-
+#!/usr/bin/env node
 const yargs = require('yargs');
 
 yargs
 .usage('$0 command')
 .command('all', 'run all bundled commands', yargs => {
-	const files = glob.sync('src/*.js');
+	const operations = require('./src');
 
-	for (const file of files) {
-		if (file.endsWith('utilities.js')) continue;
-
-		require('./' + file)();
+	for (const key of Object.keys(operations)) {
+		operations[key]();
 	}
 })
 .command('fix-libraries', 'add any missing build configurations to all xcode projects in node_modules', yargs => {
@@ -19,6 +15,9 @@ yargs
 })
 .command('fix-script', 'replace the react native ios bundler with our scheme aware one', yargs => {
 	require('./src/fix-script')();
+})
+.command('hide-library-schemes', `hide any schemes that come from your node modules directory so they don't clutter up the menu.`, yargs => {
+	require('./src/hide-library-schemes')();
 })
 .demand(1, 'must provide a valid command')
 .help('h')

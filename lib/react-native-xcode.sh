@@ -12,6 +12,7 @@
 
 set +x
 
+# And on to your previously scheduled React Native build script programming.
 eval 'case "$CONFIGURATION" in
   '$DEVELOPMENT_BUILD_CONFIGURATIONS')
     echo "Debug build!"
@@ -36,6 +37,7 @@ esac'
 
 # Path to react-native folder inside node_modules
 REACT_NATIVE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../react-native" && pwd)"
+SCHEMES_MANAGER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Xcode project file for React Native apps is located in ios/ subfolder
 cd ..
@@ -78,3 +80,8 @@ $NODE_BINARY "$REACT_NATIVE_DIR/local-cli/cli.js" bundle \
   --dev $DEV \
   --bundle-output "$DEST/main.jsbundle" \
   --assets-dest "$DEST"
+
+# XCode randomly generates user specific workspace files whenever it feels like it.
+# We want these hidden at all times, so go ahead and clean up if they're showing now.
+cd "$SCHEMES_MANAGER_DIR/../.."
+$NODE_BINARY "$SCHEMES_MANAGER_DIR/index.js" hide-library-schemes

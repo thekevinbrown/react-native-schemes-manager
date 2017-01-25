@@ -39,13 +39,12 @@ This configuration will copy the "Debug" build configuration to "Staging" and "P
 
 ## What Then?
 
-The package will automatically run this script to do two things on `postinstall`:
+The package is able to do three things:
 - Swap its own version of react-native-xcode.sh in instead of the stock on that assumes all debug schemes are named 'Debug'.
 - Add your build configurations to all library xcode projects.
+- Hide any schemes that come from your library projects so they don't show up in the menu.
 
-This means you shouldn't need to do anything further to make this work than the above.
-
-When you want to fix up your xcode projects or script, `yarn` or `npm i` after removing your `node_modules` directory should re-run both scripts automatically.
+As long as `react-native-schemes-manager all` has run whenever you add react native modules, you should be good to go.
 
 ## It's not working!
 
@@ -61,13 +60,17 @@ If you're still having trouble, post an issue so we can look into it.
 
 ## Running Manually
 
-You can run the two parts of this package on demand by running either:
+You can run the three parts of this package on demand by running either:
 
 - `react-native-schemes-manager fix-libraries`: Adds your build configurations to all library xcode projects.
 - `react-native-schemes-manager fix-script`: Swaps a schemes aware build script in instead of the stock react native one.
-- `react-native-schemes-manager all`: Runs both scripts above.
+- `react-native-schemes-manager hide-library-schemes`: Hides any build schemes that come from your node_modules folder xcodeproj files as you don't usually want to see them anyway.
 
-The best way to do this is add to your `package.json` scripts section like so:
+And of course you can run all 3 easily if you'd prefer:
+
+- `react-native-schemes-manager all`: Runs all the scripts above.
+
+The best way to give yourself a manual trigger for this is add to your `package.json` scripts section like so:
 
 ```json
 {
@@ -80,7 +83,7 @@ The best way to do this is add to your `package.json` scripts section like so:
 }
 ```
 
-You can then `yarn run fix-xcode` or `npm run fix-xcode` which will run the script.
+You can then `yarn run fix-xcode` or `npm run fix-xcode` which will run the cleanup scripts on demand.
 
 ## Further Reading
 

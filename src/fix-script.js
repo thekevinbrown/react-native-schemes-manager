@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const path = require('path');
 
 const utilities = require('./utilities');
@@ -15,17 +16,16 @@ function updateProject (project) {
             // Found it!
             // Need to add our actual mappings to the project.
 			const configurations = utilities.getMappings().join('|');
-
 			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${configurations}|Debug\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
 
 			if (step.shellScript === newScript) {
                 // It's already up to date.
-				console.log(' - [skipped] already done');
+				console.log(chalk.gray(` - [fix-script]: ${path.dirname(path.relative(process.cwd(), project.filepath))} skipped`));
 				return false;
 			} else {
 				step.shellScript = newScript;
 
-				console.log(` ✔ [fixed]`);
+				console.log(chalk.gray(` ${chalk.green('✔')} [fix-script]: ${path.dirname(path.relative(process.cwd(), project.filepath))} ${chalk.green('fixed')}`));
 				return true;
 			}
 		}

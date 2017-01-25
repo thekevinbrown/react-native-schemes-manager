@@ -1,15 +1,13 @@
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
-const uuid = require('uuid');
+const plist = require('plist');
 const xcode = require('xcode');
 
 module.exports = {
 	getClosestLikelyReactNativeProjectPath () {
 		let currentPath = process.cwd();
 		let nextPath;
-
-		console.log(`searching in ${currentPath}`);
 
 		const pattern = 'ios/*.xcodeproj/project.pbxproj';
 		let files = glob.sync(path.join(currentPath, pattern));
@@ -32,8 +30,8 @@ module.exports = {
 			throw new Error('Could not locate a likely path.');
 		}
 	},
-	updateProjectsMatchingGlob (pattern, callback) {
-        // Find all of the pbxproj files we care about.
+	getFilesMatchingGlob (pattern, callback) {
+        // Find all of the files we care about.
 		const project = this.getClosestLikelyReactNativeProjectPath();
 		if (!project) return callback(new Error('Unable to find project path.'));
 
@@ -41,20 +39,35 @@ module.exports = {
 			if (err) throw err;
 
             // Go through each project.
-			for (const projectPath of files) {
-				const project = xcode.project(projectPath);
-				project.parseSync();
-
-                // And fix it.
-				if (callback(null, project)) {
-					console.log('Saving project file.');
-					fs.writeFileSync(projectPath, project.writeSync());
-				}
+			for (const filePath of files) {
+				callback(null, filePath);
 			}
 		});
 	},
-	generateUuid () {
-		return uuid.v4().replace(/-/g, '').substr(0, 24).toUpperCase();
+	updateProjectsMatchingGlob (pattern, callback) {
+		this.getFilesMatchingGlob(pattern, (err, filePath) => {
+			if (!filePath) return callback(new Error('Unable to find project path.'));
+
+			const project = xcode.project(filePath);
+			project.parseSync();
+
+			// And fix it.
+			if (callback(null, project)) {
+				fs.writeFileSync(filePath, project.writeSync());
+			}
+		});
+	},
+	updatePlistsMatchingGlob (pattern, callback) {
+		this.getFilesMatchingGlob(pattern, (err, filePath) => {
+			if (!filePath) return callback(new Error('Unable to find plist path.'));
+
+			const file = plist.parse(fs.readFileSync(filePath, 'utf8'));
+
+			// And fix it.
+			if (callback(null, file, filePath)) {
+				fs.writeFileSync(filePath, plist.build(file));
+			}
+		});
 	},
 	getMappings () {
 		const project = this.getClosestLikelyReactNativeProjectPath();
