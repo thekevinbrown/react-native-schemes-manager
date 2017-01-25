@@ -1,6 +1,6 @@
 # React Native Schemes Manager
 
-XCode environments without the stress. Use XCode schemes with React Native without pulling your hair out.
+Now you can use XCode build configurations / schemes with React Native without pulling your hair out.
 
 [![Supported by Thinkmill](https://thinkmill.github.io/badge/heart.svg)](http://thinkmill.com.au/?utm_source=github&utm_medium=badge&utm_campaign=react-native-schemes-manager)
 
