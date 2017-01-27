@@ -16,7 +16,8 @@ module.exports = {
 			nextPath = path.resolve(currentPath, '..');
 
 			if (nextPath === currentPath) {
-				throw new Error('Could not locate a likely path.');
+				// We're at the root of the filesystem and didn't find anything.
+				return null;
 			}
 
 			currentPath = nextPath;
@@ -24,11 +25,7 @@ module.exports = {
 			files = glob.sync(path.join(currentPath, pattern));
 		}
 
-		if (files.length > 0) {
-			return currentPath;
-		}
-
-		return null;
+		return currentPath;
 	},
 	getFilesMatchingGlob (pattern, callback) {
         // Find all of the files we care about.
