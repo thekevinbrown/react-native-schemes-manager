@@ -2,6 +2,7 @@
 
 Now you can use XCode build configurations / schemes with React Native without pulling your hair out.
 
+[![Build Status](https://travis-ci.org/Thinkmill/react-native-schemes-manager.svg?branch=master)](https://travis-ci.org/Thinkmill/react-native-schemes-manager)
 [![Supported by Thinkmill](https://thinkmill.github.io/badge/heart.svg)](http://thinkmill.com.au/?utm_source=github&utm_medium=badge&utm_campaign=react-native-schemes-manager)
 
 If your app has multiple environments, you'd probably like to be able to manage these the way native developers have been doing for years, XCode schemes and build configurations.
@@ -40,7 +41,7 @@ This configuration will copy the "Debug" build configuration to "Staging" and "P
 ## What Then?
 
 The package is able to do three things:
-- Swap its own version of react-native-xcode.sh in instead of the stock on that assumes all debug schemes are named 'Debug'.
+- Swap its own version of react-native-xcode.sh in instead of the stock one that assumes all debug schemes are named 'Debug'.
 - Add your build configurations to all library xcode projects.
 - Hide any schemes that come from your library projects so they don't show up in the menu.
 
