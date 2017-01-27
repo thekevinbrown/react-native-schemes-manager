@@ -26,9 +26,9 @@ module.exports = {
 
 		if (files.length > 0) {
 			return currentPath;
-		} else {
-			throw new Error('Could not locate a likely path.');
 		}
+
+		return null;
 	},
 	getFilesMatchingGlob (pattern, callback) {
         // Find all of the files we care about.
