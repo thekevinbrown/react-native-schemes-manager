@@ -70,10 +70,10 @@ module.exports = {
 		const project = this.getClosestLikelyReactNativeProjectPath();
 		const packageJson = require(path.join(project, 'package.json'));
 
-		if (!packageJson.xcodeSchemes || !packageJson.xcodeSchemes.Debug) {
+		if (!packageJson.xcodeSchemes) {
 			throw new Error('Please configure schemes on your project. For more information, see https://github.com/Thinkmill/react-native-schemes-manager/blob/master/README.md');
 		}
 
-		return packageJson.xcodeSchemes.Debug;
+		return packageJson.xcodeSchemes;
 	},
 };

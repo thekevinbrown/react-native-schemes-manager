@@ -22,41 +22,44 @@ function updateProject (project) {
 	const configs = project.pbxXCBuildConfigurationSection();
 	const configLists = project.pbxXCConfigurationList();
 	let changed = false;
+	const mappings = utilities.getMappings();
 
 	// Go through each mapping in our debug map and figure out if we need to clone it.
-	for (let mapping of utilities.getMappings()) {
+	for (const sourceBuildConfig of Object.keys(mappings)) {
+		for (const destinationBuildConfig of mappings[sourceBuildConfig]) {
+			// Do we have the clone already?
+			const buildConfig = project.getBuildConfigByName(destinationBuildConfig);
 
-		// Do we have the clone already?
-		const buildConfig = project.getBuildConfigByName(mapping);
+			// If we get an empty object back, then it's not able to find the build config.
+			if (Object.keys(buildConfig).length === 0) {
+				// Ok, we need to create our clone of the build configs they've asked for and add it to the config lists.
+				const sourceConfigs = project.getBuildConfigByName(sourceBuildConfig);
 
-		// If we get an empty object back, then it's not able to find the build config.
-		if (Object.keys(buildConfig).length === 0) {
-			// Ok, we need to create our clone of the Debug build config and add it to the config lists.
-			const debugConfigs = project.getBuildConfigByName('Debug');
+				// There are actually multiple of the same configs spread across multiple lists. Clone them all to the destination build configs.
+				for (const key of Object.keys(sourceConfigs)) {
+					const sourceConfig = sourceConfigs[key];
+					const configList = configListForConfig(configLists, key);
 
-			// There are actually multiple debug configs spread across multiple lists. Clone them all.
-			for (const key of Object.keys(debugConfigs)) {
-				const debugConfig = debugConfigs[key];
-				const configList = configListForConfig(configLists, key);
+					if (!configList) throw new Error(`Unable to find config list for build configuration: ${sourceConfig.name}`);
 
-				if (!configList) throw new Error(`Unable to find config list for build configuration: ${debugConfig.name}`);
+					// Copy that bad boy.
+					const clone = JSON.parse(JSON.stringify(sourceConfig));
+					clone.name = destinationBuildConfig;
 
-				const clone = JSON.parse(JSON.stringify(debugConfig));
-				clone.name = mapping;
+					const configurationUuid = project.generateUuid();
+					const configurationCommentKey = `${configurationUuid}_comment`;
 
-				const configurationUuid = project.generateUuid();
-				const configurationCommentKey = `${configurationUuid}_comment`;
+					configs[configurationUuid] = clone;
+					configs[configurationCommentKey] = destinationBuildConfig;
+					configList.buildConfigurations.push({ value: configurationUuid, comment: destinationBuildConfig });
+				}
 
-				configs[configurationUuid] = clone;
-				configs[configurationCommentKey] = mapping;
-				configList.buildConfigurations.push({ value: configurationUuid, comment: mapping });
+				console.log(chalk.gray(` ${chalk.green('✔')} [fix-libraries]: ${chalk.green(sourceBuildConfig + ' -> ' + destinationBuildConfig + ' created')} in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
+
+				changed = true;
+			} else {
+				console.log(chalk.gray(` - [fix-libraries]: ${sourceBuildConfig} -> ${destinationBuildConfig} skipped in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
 			}
-
-			console.log(chalk.gray(` ${chalk.green('✔')} [fix-libraries]: ${chalk.green('Debug -> ' + mapping + ' created')} in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
-
-			changed = true;
-		} else {
-			console.log(chalk.gray(` - [fix-libraries]: Debug -> ${mapping} skipped in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
 		}
 	}
 

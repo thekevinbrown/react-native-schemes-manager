@@ -15,7 +15,7 @@ function updateProject (project) {
 		if (step && step.shellScript && step.shellScript.indexOf('react-native-xcode.sh') >= 0) {
             // Found it!
             // Need to add our actual mappings to the project.
-			const configurations = utilities.getMappings().join('|');
+			const configurations = (utilities.getMappings().Debug || []).join('|');
 			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${configurations}|Debug\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
 
 			if (step.shellScript === newScript) {
