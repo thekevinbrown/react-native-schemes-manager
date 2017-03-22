@@ -37,6 +37,10 @@ module.exports = function findAndFix () {
 	const pattern = './ios/*.xcodeproj/project.pbxproj';
 
 	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
+		if (err) {
+			return console.error(chalk.red(`⃠ [fix-script]: Error!`, err));
+		}
+
 		return updateProject(project);
 	});
 };

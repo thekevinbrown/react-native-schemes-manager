@@ -71,6 +71,10 @@ module.exports = function findAndFix () {
 	const pattern = './node_modules/**/*.xcodeproj/project.pbxproj';
 
 	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
+		if (err) {
+			return console.error(chalk.red(`⃠ [fix-libraries]: Error!`, err));
+		}
+
 		return updateProject(project);
 	});
 };

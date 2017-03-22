@@ -33,7 +33,7 @@ module.exports = {
 		if (!project) return callback(new Error('Unable to find project path.'));
 
 		glob(path.join(project, pattern), (err, files) => {
-			if (err) throw err;
+			if (err) return callback(err);
 
             // Go through each project.
 			for (const filePath of files) {
@@ -44,9 +44,22 @@ module.exports = {
 	updateProjectsMatchingGlob (pattern, callback) {
 		this.getFilesMatchingGlob(pattern, (err, filePath) => {
 			if (!filePath) return callback(new Error('Unable to find project path.'));
+			if (filePath.endsWith(path.join('Pods.xcodeproj', 'project.pbxproj'))) {
+				// The Pods.xcodeproj file isn't currently able to be parsed
+				// by node-xcode:
+				// https://github.com/alunny/node-xcode/issues/127
+				//
+				// We don't actually need to manipulate it so we'll go ahead and ignore.
+				return;
+			}
 
 			const project = xcode.project(filePath);
-			project.parseSync();
+
+			try {
+				project.parseSync();
+			} catch (error) {
+				return callback(error);
+			}
 
 			// And fix it.
 			if (callback(null, project)) {
