@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const path = require('path');
+const util = require('util');
 
 const utilities = require('./utilities');
 
@@ -44,7 +45,7 @@ function updateProject (project) {
 
 					// Copy that bad boy.
 					const clone = JSON.parse(JSON.stringify(sourceConfig));
-					clone.name = destinationBuildConfig;
+					clone.name =  util.format('"%s"', destinationBuildConfig);
 
 					const configurationUuid = project.generateUuid();
 					const configurationCommentKey = `${configurationUuid}_comment`;
