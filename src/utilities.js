@@ -89,4 +89,14 @@ module.exports = {
 
 		return packageJson.xcodeSchemes;
 	},
+	getBundledMappings () {
+		const project = this.getClosestLikelyReactNativeProjectPath();
+		const packageJson = require(path.join(project, 'package.json'));
+
+		if (!packageJson.bundledDebugSchemes) {
+			return [];
+		}
+
+		return packageJson.bundledDebugSchemes;
+	},
 };
