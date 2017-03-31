@@ -7,6 +7,7 @@ const xcode = require('xcode');
 module.exports = {
 	getClosestLikelyReactNativeProjectPath () {
 		let currentPath = process.cwd();
+		console.log('currentPath', currentPath)
 		let nextPath;
 
 		const pattern = 'ios/*.xcodeproj/project.pbxproj';
@@ -21,8 +22,10 @@ module.exports = {
 			}
 
 			currentPath = nextPath;
+			console.log('currentPath', currentPath)
 
 			files = glob.sync(path.join(currentPath, pattern));
+			console.log('files', files)
 		}
 
 		return currentPath;
