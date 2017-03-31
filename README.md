@@ -21,7 +21,7 @@ or
 npm install --save-dev react-native-schemes-manager
 ```
 
-Once the package is installed in your project, you just need to configure it by adding an `xcodeSchemes` section to your `package.json` and adding a `postinstall` script which will re-run the script whenever you add or remove packages to/from your project:
+Once the package is installed in your project, you just need to configure it by adding an `xcodeSchemes` section and an optional `bundledDebugSchemes` section to your `package.json` and adding a `postinstall` script which will re-run the script whenever you add or remove packages to/from your project:
 
 ```json
 {
@@ -31,12 +31,16 @@ Once the package is installed in your project, you just need to configure it by 
 		"postinstall": "react-native-schemes-manager all"
 	},
 	"xcodeSchemes": {
-		"Debug": ["Staging", "Preflight"]
-	}
+		"Debug": ["Staging", "Preflight"],
+		"Release": ["Beta"]
+	},
+	"bundledDebugSchemes": ["Preflight"]
 }
 ```
 
-This configuration will copy the "Debug" build configuration to "Staging" and "Preflight" build configurations in all your dependent library projects.
+This configuration will copy the "Debug" build configuration to "Staging" and "Preflight" build configurations in all your dependent library projects.  This configuration will also copy the "Release" build configuration to the "Beta" build configuration for all of the dependent libraries.  The "Debug" and "Release" arrays are both optional.
+
+Some Debug schemes will use the packager and some will use the JavaScript code that is bundled into the app itself.  If you want a Debug scheme to use the bundled code, add the name of the scheme to the `bundledDebugSchemes` array.  This configuration will cause the "Preflight" scheme to go through the bundling step in the build process, while the "Staging" scheme will skip this step.
 
 ## What Then?
 
