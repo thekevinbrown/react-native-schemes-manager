@@ -5,7 +5,6 @@ yargs
 .usage('$0 command')
 .command('all', 'run all bundled commands', yargs => {
 	const operations = require('./src');
-	console.log("yargs" yargs)
 
 	for (const key of Object.keys(operations)) {
 		operations[key]();
