@@ -42,6 +42,8 @@ This configuration will copy the "Debug" build configuration to "Staging" and "P
 
 Some Debug schemes will use the packager and some will use the JavaScript code that is bundled into the app itself.  If you want a Debug scheme to use the bundled code, add the name of the scheme to the `bundledDebugSchemes` array.  This configuration will cause the "Preflight" scheme to go through the bundling step in the build process, while the "Staging" scheme will skip this step.
 
+If your Xcode project is not in a directory called, "ios".  You can specify the directory using a `--ios-project-dir` command line argument.  See below for an example.
+
 ## What Then?
 
 The package is able to do three things:
@@ -74,6 +76,10 @@ You can run the three parts of this package on demand by running either:
 And of course you can run all 3 easily if you'd prefer:
 
 - `react-native-schemes-manager all`: Runs all the scripts above.
+
+If your Xcode project is in a non-standard directory, you could run all three parts of the package using:
+
+- `react-native-schemes-manager all --ios-project-dir=iOS`
 
 The best way to give yourself a manual trigger for this is add to your `package.json` scripts section like so:
 
