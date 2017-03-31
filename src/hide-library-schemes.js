@@ -26,13 +26,13 @@ function updateFile (file, filePath) {
 	return changed;
 }
 
-module.exports = function findAndFix (argv) {
+module.exports = function findAndFix () {
 	// Find all of the pbxproj files we care about.
 	const userSpecificPattern = './node_modules/**/*.xcodeproj/xcuserdata/*.xcuserdatad/xcschemes/xcschememanagement.plist';
 
 	console.log(chalk.gray('Hiding schemes from node_modules xcode projects.'));
 
-	utilities.updatePlistsMatchingGlob(userSpecificPattern, argv.iosProjectDir, (err, file, filePath) => {
+	utilities.updatePlistsMatchingGlob(userSpecificPattern, (err, file, filePath) => {
 		return updateFile(file, filePath);
 	});
 };
