@@ -1,3 +1,4 @@
+
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
@@ -5,12 +6,15 @@ const plist = require('plist');
 const xcode = require('xcode');
 
 module.exports = {
-	getClosestLikelyReactNativeProjectPath () {
+	getClosestLikelyReactNativeProjectPath (iOsProjectPath) {
+		if (!iOsProjectPath) {
+			iOsProjectPath = 'ios';
+		}
 		let currentPath = process.cwd();
 		console.log('currentPath', currentPath)
 		let nextPath;
 
-		const pattern = 'ios/*.xcodeproj/project.pbxproj';
+		const pattern = `${iOsProjectPath}/*.xcodeproj/project.pbxproj`;
 		let files = glob.sync(path.join(currentPath, pattern));
 
 		while (files.length === 0) {
