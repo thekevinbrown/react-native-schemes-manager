@@ -3,10 +3,10 @@ const path = require('path');
 
 const utilities = require('./utilities');
 
-module.exports = function verifyConfig () {
+module.exports = function verifyConfig (argv) {
 	let packageJson = null;
 
-	const project = utilities.getClosestLikelyReactNativeProjectPath();
+	const project = utilities.getClosestLikelyReactNativeProjectPath(argv.iosProjectDir);
 	if (project) packageJson = require(path.join(project, 'package.json'));
 
 	if (!packageJson) {

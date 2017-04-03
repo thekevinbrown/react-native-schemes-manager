@@ -17,12 +17,12 @@ function configListForConfig (configLists, configUuid) {
 	return null;
 }
 
-function updateProject (project) {
+function updateProject (project, argv) {
 
 	const configs = project.pbxXCBuildConfigurationSection();
 	const configLists = project.pbxXCConfigurationList();
 	let changed = false;
-	const mappings = utilities.getMappings();
+	const mappings = utilities.getMappings(argv.iosProjectDir);
 
 	// Go through each mapping in our debug map and figure out if we need to clone it.
 	for (const sourceBuildConfig of Object.keys(mappings)) {
@@ -66,15 +66,15 @@ function updateProject (project) {
 	return changed;
 }
 
-module.exports = function findAndFix () {
+module.exports = function findAndFix (argv) {
 	// Find all of the pbxproj files we care about.
 	const pattern = './node_modules/**/*.xcodeproj/project.pbxproj';
 
-	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
+	utilities.updateProjectsMatchingGlob(pattern, argv.iosProjectDir, (err, project) => {
 		if (err) {
 			return console.error(chalk.red(`⃠ [fix-libraries]: Error!`, err));
 		}
 
-		return updateProject(project);
+		return updateProject(project, argv);
 	});
 };

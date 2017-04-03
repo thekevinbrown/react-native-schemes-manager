@@ -3,7 +3,7 @@ const path = require('path');
 
 const utilities = require('./utilities');
 
-function updateProject (project) {
+function updateProject (project, argv) {
 	console.log(path.dirname(path.relative(process.cwd(), project.filepath)));
 
 	const section = project.hash.project.objects.PBXShellScriptBuildPhase;
@@ -16,7 +16,9 @@ function updateProject (project) {
             // Found it!
             // Need to add our actual mappings to the project.
 			const configurations = (utilities.getMappings().Debug || []).join('|');
-			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${configurations}|Debug\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
+			const devConfigs = `${configurations}${configurations.length ? '|' : ''}Debug`;
+			const bundledDebugSchemes = utilities.getBundledMappings(argv.iosProjectDir).join('|');
+			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${devConfigs}\\"\\nexport BUNDLED_DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${bundledDebugSchemes}\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
 
 			if (step.shellScript === newScript) {
                 // It's already up to date.
@@ -32,15 +34,15 @@ function updateProject (project) {
 	}
 }
 
-module.exports = function findAndFix () {
+module.exports = function findAndFix (argv) {
 	// Find all of the pbxproj files we care about.
 	const pattern = './ios/*.xcodeproj/project.pbxproj';
 
-	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
+	utilities.updateProjectsMatchingGlob(pattern, argv.iosProjectDir, (err, project) => {
 		if (err) {
 			return console.error(chalk.red(`⃠ [fix-script]: Error!`, err));
 		}
 
-		return updateProject(project);
+		return updateProject(project, argv);
 	});
 };
