@@ -32,7 +32,7 @@ module.exports = function findAndFix (argv) {
 
 	console.log(chalk.gray('Hiding schemes from node_modules xcode projects.'));
 
-	utilities.updatePlistsMatchingGlob(userSpecificPattern, argv.iosProjectDir, (err, file, filePath) => {
+	utilities.updatePlistsMatchingGlob(userSpecificPattern, (err, file, filePath) => {
 		return updateFile(file, filePath);
 	});
 };

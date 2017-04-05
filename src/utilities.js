@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
@@ -6,16 +5,19 @@ const plist = require('plist');
 const xcode = require('xcode');
 
 module.exports = {
-	getClosestLikelyReactNativeProjectPath (iosProjectDir) {
-		if (!iosProjectDir) {
-			iosProjectDir = 'ios';
-		}
+	getClosestLikelyReactNativeProjectPath () {
 		let currentPath = process.cwd();
 		let nextPath;
 
-		const pattern = `${iosProjectDir}/*.xcodeproj/project.pbxproj`;
-		let files = glob.sync(path.join(currentPath, pattern));
+		// first we need to get to the point where we're not in the node_modules directory
+		while (currentPath.indexOf('node_modules') > -1) {
+			currentPath = path.resolve(currentPath, '..');
+		}
 
+
+		// now find the package.json for the project
+		const pattern = 'package.json';
+		let files = glob.sync(path.join(currentPath, pattern));
 		while (files.length === 0) {
 			nextPath = path.resolve(currentPath, '..');
 
@@ -31,9 +33,9 @@ module.exports = {
 
 		return currentPath;
 	},
-	getFilesMatchingGlob (pattern, iosProjectDir, callback) {
+	getFilesMatchingGlob (pattern, callback) {
         // Find all of the files we care about.
-		const project = this.getClosestLikelyReactNativeProjectPath(iosProjectDir);
+		const project = this.getClosestLikelyReactNativeProjectPath();
 		if (!project) return callback(new Error('Unable to find project path.'));
 
 		glob(path.join(project, pattern), (err, files) => {
@@ -45,8 +47,8 @@ module.exports = {
 			}
 		});
 	},
-	updateProjectsMatchingGlob (pattern, iosProjectDir, callback) {
-		this.getFilesMatchingGlob(pattern, iosProjectDir, (err, filePath) => {
+	updateProjectsMatchingGlob (pattern, callback) {
+		this.getFilesMatchingGlob(pattern, (err, filePath) => {
 			if (!filePath) return callback(new Error('Unable to find project path.'));
 			if (filePath.endsWith(path.join('Pods.xcodeproj', 'project.pbxproj'))) {
 				// The Pods.xcodeproj file isn't currently able to be parsed
@@ -71,8 +73,8 @@ module.exports = {
 			}
 		});
 	},
-	updatePlistsMatchingGlob (pattern, iosProjectDir, callback) {
-		this.getFilesMatchingGlob(pattern, iosProjectDir, (err, filePath) => {
+	updatePlistsMatchingGlob (pattern, callback) {
+		this.getFilesMatchingGlob(pattern, (err, filePath) => {
 			if (!filePath) return callback(new Error('Unable to find plist path.'));
 
 			const file = plist.parse(fs.readFileSync(filePath, 'utf8'));
@@ -83,8 +85,8 @@ module.exports = {
 			}
 		});
 	},
-	getMappings (iosProjectDir) {
-		const project = this.getClosestLikelyReactNativeProjectPath(iosProjectDir);
+	getMappings () {
+		const project = this.getClosestLikelyReactNativeProjectPath();
 		const packageJson = require(path.join(project, 'package.json'));
 
 		if (!packageJson.xcodeSchemes) {
@@ -92,15 +94,5 @@ module.exports = {
 		}
 
 		return packageJson.xcodeSchemes;
-	},
-	getBundledMappings (iosProjectDir) {
-		const project = this.getClosestLikelyReactNativeProjectPath(iosProjectDir);
-		const packageJson = require(path.join(project, 'package.json'));
-
-		if (!packageJson.bundledDebugSchemes) {
-			return [];
-		}
-
-		return packageJson.bundledDebugSchemes;
 	},
 };

@@ -3,7 +3,7 @@ const path = require('path');
 
 const utilities = require('./utilities');
 
-function updateProject (project, argv) {
+function updateProject (project) {
 	console.log(path.dirname(path.relative(process.cwd(), project.filepath)));
 
 	const section = project.hash.project.objects.PBXShellScriptBuildPhase;
@@ -17,8 +17,7 @@ function updateProject (project, argv) {
             // Need to add our actual mappings to the project.
 			const configurations = (utilities.getMappings().Debug || []).join('|');
 			const devConfigs = `${configurations}${configurations.length ? '|' : ''}Debug`;
-			const bundledDebugSchemes = utilities.getBundledMappings(argv.iosProjectDir).join('|');
-			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${devConfigs}\\"\\nexport BUNDLED_DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${bundledDebugSchemes}\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
+			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${devConfigs}\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
 
 			if (step.shellScript === newScript) {
                 // It's already up to date.
@@ -34,15 +33,20 @@ function updateProject (project, argv) {
 	}
 }
 
-module.exports = function findAndFix (argv) {
-	// Find all of the pbxproj files we care about.
-	const pattern = './ios/*.xcodeproj/project.pbxproj';
+module.exports = function findAndFix () {
+	let projectDirectory = utilities.getMappings().projectDirectory;
+	if (!projectDirectory) {
+		projectDirectory = 'ios';
+	}
 
-	utilities.updateProjectsMatchingGlob(pattern, argv.iosProjectDir, (err, project) => {
+	// Find all of the pbxproj files we care about.
+	const pattern = `./${projectDirectory}/*.xcodeproj/project.pbxproj`;
+
+	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
 		if (err) {
 			return console.error(chalk.red(`⃠ [fix-script]: Error!`, err));
 		}
 
-		return updateProject(project, argv);
+		return updateProject(project);
 	});
 };

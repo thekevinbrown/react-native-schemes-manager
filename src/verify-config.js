@@ -3,10 +3,10 @@ const path = require('path');
 
 const utilities = require('./utilities');
 
-module.exports = function verifyConfig (argv) {
+module.exports = function verifyConfig () {
 	let packageJson = null;
 
-	const project = utilities.getClosestLikelyReactNativeProjectPath(argv.iosProjectDir);
+	const project = utilities.getClosestLikelyReactNativeProjectPath();
 	if (project) packageJson = require(path.join(project, 'package.json'));
 
 	if (!packageJson) {
@@ -22,7 +22,7 @@ module.exports = function verifyConfig (argv) {
 	const postinstallInvalid = !postinstall || typeof postinstall !== 'string' || postinstall.indexOf('react-native-schemes-manager') < 0;
 
 	const xcodeSchemes = packageJson.xcodeSchemes;
-	const xcodeSchemesInvalid = !xcodeSchemes || !xcodeSchemes.Debug || !Array.isArray(xcodeSchemes.Debug);
+	const xcodeSchemesInvalid = !xcodeSchemes || !(Array.isArray(xcodeSchemes.Debug) || Array.isArray(xcodeSchemes.Release));
 
 	if (postinstallInvalid || xcodeSchemesInvalid) {
 		console.log(chalk.yellow('========================================================================================='));
