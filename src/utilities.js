@@ -14,7 +14,6 @@ module.exports = {
 			currentPath = path.resolve(currentPath, '..');
 		}
 
-
 		// now find the package.json for the project
 		const pattern = 'package.json';
 		let files = glob.sync(path.join(currentPath, pattern));

@@ -26,7 +26,7 @@ function updateFile (file, filePath) {
 	return changed;
 }
 
-module.exports = function findAndFix (argv) {
+module.exports = function findAndFix () {
 	// Find all of the pbxproj files we care about.
 	const userSpecificPattern = './node_modules/**/*.xcodeproj/xcuserdata/*.xcuserdatad/xcschemes/xcschememanagement.plist';
 
