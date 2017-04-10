@@ -25,7 +25,7 @@ function updateProject (project) {
 	const { Debug, Release } = utilities.getMappings();
 	const mappings = {
 		Debug,
-		Release
+		Release,
 	};
 
 	// Go through each mapping in our debug map and figure out if we need to clone it.
