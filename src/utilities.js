@@ -9,9 +9,14 @@ module.exports = {
 		let currentPath = process.cwd();
 		let nextPath;
 
-		const pattern = 'ios/*.xcodeproj/project.pbxproj';
-		let files = glob.sync(path.join(currentPath, pattern));
+		// first we need to get to the point where we're not in the node_modules directory
+		while (currentPath.indexOf('node_modules') > -1) {
+			currentPath = path.resolve(currentPath, '..');
+		}
 
+		// now find the package.json for the project
+		const pattern = 'package.json';
+		let files = glob.sync(path.join(currentPath, pattern));
 		while (files.length === 0) {
 			nextPath = path.resolve(currentPath, '..');
 

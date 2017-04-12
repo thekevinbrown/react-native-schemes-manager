@@ -16,7 +16,8 @@ function updateProject (project) {
             // Found it!
             // Need to add our actual mappings to the project.
 			const configurations = (utilities.getMappings().Debug || []).join('|');
-			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${configurations}|Debug\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
+			const devConfigs = `${configurations}${configurations.length ? '|' : ''}Debug`;
+			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${devConfigs}\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
 
 			if (step.shellScript === newScript) {
                 // It's already up to date.
@@ -33,8 +34,13 @@ function updateProject (project) {
 }
 
 module.exports = function findAndFix () {
+	let projectDirectory = utilities.getMappings().projectDirectory;
+	if (!projectDirectory) {
+		projectDirectory = 'ios';
+	}
+
 	// Find all of the pbxproj files we care about.
-	const pattern = './ios/*.xcodeproj/project.pbxproj';
+	const pattern = `./${projectDirectory}/*.xcodeproj/project.pbxproj`;
 
 	utilities.updateProjectsMatchingGlob(pattern, (err, project) => {
 		if (err) {

@@ -22,7 +22,11 @@ function updateProject (project) {
 	const configs = project.pbxXCBuildConfigurationSection();
 	const configLists = project.pbxXCConfigurationList();
 	let changed = false;
-	const mappings = utilities.getMappings();
+	const { Debug, Release } = utilities.getMappings();
+	const mappings = {
+		Debug,
+		Release,
+	};
 
 	// Go through each mapping in our debug map and figure out if we need to clone it.
 	for (const sourceBuildConfig of Object.keys(mappings)) {

@@ -22,7 +22,7 @@ module.exports = function verifyConfig () {
 	const postinstallInvalid = !postinstall || typeof postinstall !== 'string' || postinstall.indexOf('react-native-schemes-manager') < 0;
 
 	const xcodeSchemes = packageJson.xcodeSchemes;
-	const xcodeSchemesInvalid = !xcodeSchemes || !xcodeSchemes.Debug || !Array.isArray(xcodeSchemes.Debug);
+	const xcodeSchemesInvalid = !xcodeSchemes || !(Array.isArray(xcodeSchemes.Debug) || Array.isArray(xcodeSchemes.Release));
 
 	if (postinstallInvalid || xcodeSchemesInvalid) {
 		console.log(chalk.yellow('========================================================================================='));
