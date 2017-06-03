@@ -14,7 +14,7 @@ set +x
 
 # And on to your previously scheduled React Native build script programming.
 eval 'case "$CONFIGURATION" in
-  '$DEVELOPMENT_BUILD_CONFIGURATIONS')
+  "$DEVELOPMENT_BUILD_CONFIGURATIONS")
     echo "Debug build!"
     # Speed up build times by skipping the creation of the offline package for debug
     # builds on the simulator since the packager is supposed to be running anyways.
@@ -34,6 +34,11 @@ eval 'case "$CONFIGURATION" in
     DEV=false
     ;;
 esac'
+
+if [ $? -ne 0 ]; then
+    echo "error: Failed determining valid build configuration." >&2
+    exit 1
+fi
 
 # Path to react-native folder inside node_modules
 REACT_NATIVE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../react-native" && pwd)"
@@ -78,7 +83,7 @@ set -x
 DEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH
 
 eval 'case "$CONFIGURATION" in
-  '$DEVELOPMENT_BUILD_CONFIGURATIONS')
+  "$DEVELOPMENT_BUILD_CONFIGURATIONS")
   if [[ ! "$PLATFORM_NAME" == *simulator ]]; then
     PLISTBUDDY='/usr/libexec/PlistBuddy'
     PLIST=$TARGET_BUILD_DIR/$INFOPLIST_PATH
@@ -91,6 +96,11 @@ eval 'case "$CONFIGURATION" in
     echo "$IP.xip.io" > "$DEST/ip.txt"
   fi
 esac'
+
+if [ $? -ne 0 ]; then
+    echo "error: failing determining if plist changes were required." >&2
+    exit 1
+fi
 
 BUNDLE_FILE="$DEST/main.jsbundle"
 
