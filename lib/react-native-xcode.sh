@@ -12,9 +12,12 @@
 
 set +x
 
+# Enable pattern matching
+shopt -s extglob
+
 # And on to your previously scheduled React Native build script programming.
 eval 'case "$CONFIGURATION" in
-  "$DEVELOPMENT_BUILD_CONFIGURATIONS")
+  $DEVELOPMENT_BUILD_CONFIGURATIONS)
     echo "Debug build!"
     # Speed up build times by skipping the creation of the offline package for debug
     # builds on the simulator since the packager is supposed to be running anyways.
@@ -83,7 +86,7 @@ set -x
 DEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH
 
 eval 'case "$CONFIGURATION" in
-  "$DEVELOPMENT_BUILD_CONFIGURATIONS")
+  $DEVELOPMENT_BUILD_CONFIGURATIONS)
   if [[ ! "$PLATFORM_NAME" == *simulator ]]; then
     PLISTBUDDY='/usr/libexec/PlistBuddy'
     PLIST=$TARGET_BUILD_DIR/$INFOPLIST_PATH
