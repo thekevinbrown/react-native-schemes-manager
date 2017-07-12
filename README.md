@@ -68,6 +68,7 @@ If you're still having trouble, post an issue so we can look into it.
 You can run the three parts of this package on demand by running either:
 
 - `react-native-schemes-manager fix-libraries`: Adds your build configurations to all library Xcode projects.
+	- Specify the `--single-project` parameter to fix that single Xcode project. Example: `--single-project=React`
 - `react-native-schemes-manager fix-script`: Swaps a schemes aware build script in instead of the stock react native one.
 - `react-native-schemes-manager hide-library-schemes`: Hides any build schemes that come from your node_modules folder xcodeproj files as you don't usually want to see them anyway.
 
