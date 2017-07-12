@@ -23,10 +23,10 @@ yargs
 	require('./src/verify-config')();
 })
 .option('single-project', {
-    describe: 'Specify Xcode project name to fix single project',
-		type: 'string',
-    default: null
-  })
+	describe: 'Specify Xcode project name to fix single project',
+	type: 'string',
+	default: null,
+})
 .demand(1, 'must provide a valid command')
 .help('h')
 .alias('h', 'help')
