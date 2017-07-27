@@ -30,6 +30,10 @@ function updateProject (project) {
 
 	// Go through each mapping in our debug map and figure out if we need to clone it.
 	for (const sourceBuildConfig of Object.keys(mappings)) {
+		// Skip if no mapping is defined
+		if (mappings[sourceBuildConfig] === undefined) {
+			continue;
+		}
 		for (const destinationBuildConfig of mappings[sourceBuildConfig]) {
 			// Do we have the clone already?
 			const buildConfig = project.getBuildConfigByName(destinationBuildConfig);
