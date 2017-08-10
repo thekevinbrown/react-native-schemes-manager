@@ -69,6 +69,7 @@ Folks using this module have confirmed the library works with the following Reac
 
 - 0.42.0
 - 0.43.0
+- 0.44.0
 
 ## Running Manually
 
