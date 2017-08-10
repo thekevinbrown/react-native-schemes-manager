@@ -68,6 +68,7 @@ If you're still having trouble, post an issue so we can look into it.
 Folks using this module have confirmed the library works with the following React Native versions. If your version is not on the list and you have confirmed it works as expected please create a PR (you can even do it on github.com)
 
 - 0.42.0
+- 0.43.0
 
 ## Running Manually
 
