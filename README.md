@@ -23,7 +23,7 @@ npm install --save-dev react-native-schemes-manager
 
 Once the package is installed in your project, you just need to configure it by adding an `xcodeSchemes` section to your `package.json` and adding a `postinstall` script which will re-run the script whenever you add or remove packages to/from your project:
 
-```json
+```js
 {
 	"name": "your-awesome-app",
 	"version": "1.0.0",
@@ -33,7 +33,20 @@ Once the package is installed in your project, you just need to configure it by 
 	"xcodeSchemes": {
 		"Debug": ["Staging", "Preflight"],
 		"Release": ["Beta"],
-		"projectDirectory": "iOS"
+		"projectDirectory": "iOS",
+		"settings": {
+			"fix-script": {
+				// Additional environment variables your code might need
+				// They will be set using an `export` right before the scheme manager script runs.
+				"env": {
+					"NODE_BINARY": "/usr/bin/node6",
+					"LOGGING_LEVEL": "4"
+				},
+				// If you need to use some other command to run the scheme manager script
+				// (for example, if you use a library like Sentry).
+				"nodeCommand": "$NODE_BINARY ../node_modules/@sentry/cli/bin/sentry-cli react-native xcode"
+			}
+		}
 	},
 }
 ```
@@ -41,6 +54,8 @@ Once the package is installed in your project, you just need to configure it by 
 This configuration will copy the "Debug" build configuration to the "Staging" and "Preflight" build configurations in all your dependent library projects.  This configuration will also copy the "Release" build configuration to the "Beta" build configuration for all of the dependent libraries.  The "Debug" and "Release" arrays are both optional.
 
 If your Xcode project is not in the default directory, "ios", you can specify the directory using the optional `projectDirectory` configuration.  The above configuration specifies that the project is in an "iOS" directory instead (directories are case sensitive).
+
+You can also pass in settings for each command. The only one currently supported is `fix-script`.
 
 ## What Then?
 
