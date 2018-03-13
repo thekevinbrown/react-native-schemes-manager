@@ -107,7 +107,7 @@ eval 'case "$CONFIGURATION" in
     PLIST=$TARGET_BUILD_DIR/$INFOPLIST_PATH
     IP=$(ipconfig getifaddr en0)
     if [ -z "$IP" ]; then
-      IP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | cut -d\   -f2  | awk 'NR==1{print $1}')
+      IP=$(ifconfig | grep "inet " | grep -v " 127." | cut -d\   -f2  | awk "NR==1{print $1}")
     fi
 
     if [ -z ${DISABLE_XIP+x} ]; then
