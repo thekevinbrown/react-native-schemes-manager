@@ -110,6 +110,11 @@ eval 'case "$CONFIGURATION" in
       IP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | cut -d\   -f2  | awk 'NR==1{print $1}')
     fi
 
+    VPNIP=$(ifconfig | grep -- "-->" | cut -d\   -f2)
+    if [ "$VPNIP" ]; then
+      IP="$VPNIP"
+    fi
+
     if [ -z ${DISABLE_XIP+x} ]; then
       IP="$IP.xip.io"
     fi
