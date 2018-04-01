@@ -15,9 +15,28 @@ function updateProject (project) {
 		if (step && step.shellScript && step.shellScript.indexOf('react-native-xcode.sh') >= 0) {
             // Found it!
             // Need to add our actual mappings to the project.
-			const configurations = (utilities.getMappings().Debug || []).join('|');
-			const devConfigs = `+(${configurations}${configurations.length ? '|' : ''}Debug)`;
-			const newScript = `"export NODE_BINARY=node\\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\\"${devConfigs}\\"\\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh"`;
+			const mappings = utilities.getMappings();
+			const configurations = (mappings.Debug || []).join('|');
+			const scriptSettings = mappings.settings['fix-script'] || {};
+			const nodeCommand = scriptSettings.nodeCommand ? scriptSettings.nodeCommand + ' ' : '';
+			const env = scriptSettings.env || [];
+
+			const devConfigs = `\\"(${configurations}${configurations.length ? '|' : ''}Debug)\\"`;
+			env.DEVELOPMENT_BUILD_CONFIGURATIONS = devConfigs;
+			env.NODE_BINARY = env.NODE_BINARY || 'node';
+
+			const exports = Object.keys(env)
+				.map((key) => [key, env[key]])
+				.map(([key, value]) => `export ${key}=${value}`);
+
+			const runCommand = `${nodeCommand}../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh`;
+
+			const commands = [
+				...exports,
+				runCommand,
+			];
+
+			const newScript = `"${commands.join('\\n')}"`;
 
 			if (step.shellScript === newScript) {
                 // It's already up to date.
