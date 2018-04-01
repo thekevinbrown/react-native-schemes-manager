@@ -1,7 +1,8 @@
 {
   "name": "react-native-schemes-manager",
-  "version": "1.0.1",
-  "description": "Helps to manage React Native XCode projects that use multiple schemes to manage things like environment variables.",
+  "version": "1.0.2",
+  "description":
+    "Helps to manage React Native XCode projects that use multiple schemes to manage things like environment variables.",
   "main": "index.js",
   "bin": {
     "react-native-schemes-manager": "index.js"
@@ -30,7 +31,8 @@
   "bugs": {
     "url": "https://github.com/Thinkmill/react-native-schemes-manager/issues"
   },
-  "homepage": "https://github.com/Thinkmill/react-native-schemes-manager#readme",
+  "homepage":
+    "https://github.com/Thinkmill/react-native-schemes-manager#readme",
   "dependencies": {
     "chalk": "^1.1.3",
     "glob": "^7.1.1",
