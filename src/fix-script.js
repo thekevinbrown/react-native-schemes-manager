@@ -17,7 +17,7 @@ function updateProject (project) {
             // Need to add our actual mappings to the project.
 			const mappings = utilities.getMappings();
 			const configurations = (mappings.Debug || []).join('|');
-			const scriptSettings = mappings.settings['fix-script'] || {};
+			const scriptSettings = (mappings.settings && mappings.settings['fix-script']) || {};
 			const nodeCommand = scriptSettings.nodeCommand ? scriptSettings.nodeCommand + ' ' : '';
 			const env = scriptSettings.env || [];
 
