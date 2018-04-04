@@ -21,7 +21,7 @@ function updateProject (project) {
 			const nodeCommand = scriptSettings.nodeCommand ? scriptSettings.nodeCommand + ' ' : '';
 			const env = scriptSettings.env || [];
 
-			const devConfigs = `\\"(${configurations}${configurations.length ? '|' : ''}Debug)\\"`;
+			const devConfigs = `\\"+(${configurations}${configurations.length ? '|' : ''}Debug)\\"`;
 			env.DEVELOPMENT_BUILD_CONFIGURATIONS = devConfigs;
 			env.NODE_BINARY = env.NODE_BINARY || 'node';
 
