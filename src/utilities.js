@@ -3,6 +3,8 @@ const glob = require('glob');
 const path = require('path');
 const plist = require('plist');
 const xcode = require('xcode');
+const readLastLines = require('read-last-lines');
+
 
 module.exports = {
 	getClosestLikelyReactNativeProjectPath () {
@@ -46,8 +48,14 @@ module.exports = {
 			}
 		});
 	},
-	updateProjectsMatchingGlob (pattern, callback) {
-		this.getFilesMatchingGlob(pattern, (err, filePath) => {
+	 updateProjectsMatchingGlob (pattern, callback) {
+		this.getFilesMatchingGlob(pattern, async (err, filePath) => {
+
+			// fixes error: Expected [\n\r] but end of input found.
+			const lastLine = await readLastLines.read(filePath, 1)
+			if(!lastLine.includes("\n"))
+				fs.appendFileSync(filePath, "\n\r")
+
 			if (!filePath) return callback(new Error('Unable to find project path.'));
 			if (filePath.endsWith(path.join('Pods.xcodeproj', 'project.pbxproj'))) {
 				// The Pods.xcodeproj file isn't currently able to be parsed
