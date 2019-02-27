@@ -1,7 +1,6 @@
 {
   "name": "react-native-schemes-manager",
-  "description":
-    "Helps to manage React Native XCode projects that use multiple schemes to manage things like environment variables.",
+  "description": "Helps to manage React Native XCode projects that use multiple schemes to manage things like environment variables.",
   "version": "1.0.6",
   "main": "index.js",
   "bin": {
