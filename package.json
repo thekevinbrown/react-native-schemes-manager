@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Thinkmill/react-native-schemes-manager.git"
+    "url": "git+https://github.com/thekevinbrown/react-native-schemes-manager.git"
   },
   "keywords": [
     "react",
@@ -28,9 +28,9 @@
   "author": "Kevin Brown",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Thinkmill/react-native-schemes-manager/issues"
+    "url": "https://github.com/thekevinbrown/react-native-schemes-manager/issues"
   },
-  "homepage": "https://github.com/Thinkmill/react-native-schemes-manager#readme",
+  "homepage": "https://github.com/thekevinbrown/react-native-schemes-manager#readme",
   "dependencies": {
     "chalk": "^1.1.3",
     "glob": "^7.1.1",

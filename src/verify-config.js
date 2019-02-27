@@ -37,7 +37,7 @@ module.exports = function verifyConfig () {
 			console.log(chalk.yellow('     for react-native-schemes-manager.\n'));
 		}
 
-		console.log(chalk.yellow('     Please visit https://github.com/Thinkmill/react-native-schemes-manager#installation'));
+		console.log(chalk.yellow('     Please visit https://github.com/thekevinbrown/react-native-schemes-manager#installation'));
 		console.log(chalk.yellow('     and complete the installation process.'));
 		console.log(chalk.yellow('========================================================================================='));
 	}

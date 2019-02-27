@@ -2,21 +2,22 @@
 
 Now you can use Xcode build configurations / schemes with React Native without pulling your hair out.
 
-[![Build Status](https://travis-ci.org/Thinkmill/react-native-schemes-manager.svg?branch=master)](https://travis-ci.org/Thinkmill/react-native-schemes-manager)
-[![Supported by Thinkmill](https://thinkmill.github.io/badge/heart.svg)](http://thinkmill.com.au/?utm_source=github&utm_medium=badge&utm_campaign=react-native-schemes-manager)
+[![Build Status](https://travis-ci.org/thekevinbrown/react-native-schemes-manager.svg?branch=master)](https://travis-ci.org/thekevinbrown/react-native-schemes-manager)
 
 If your app has multiple environments, you'd probably like to be able to manage these the way native developers have been doing for years, Xcode schemes and build configurations.
 
 By default, React Native doesn't handle these particularly well, and the ability to launch dev tools or run in debug mode is impacted. This package fixes these problems.
 
-*Made by [Kevin Brown](https://twitter.com/kevinbrowntech), supported by [Thinkmill](http://thinkmill.com.au/). Thank you for making this project possible!*
+_Made by [Kevin Brown](https://twitter.com/kevinbrowntech), supported by [Tech Insite](http://techin.site/). Thank you for making this project possible!_
 
 ## Installation
 
 ```
 yarn add --dev react-native-schemes-manager
 ```
+
 or
+
 ```
 npm install --save-dev react-native-schemes-manager
 ```
@@ -51,15 +52,16 @@ Once the package is installed in your project, you just need to configure it by 
 }
 ```
 
-This configuration will copy the "Debug" build configuration to the "Staging" and "Preflight" build configurations in all your dependent library projects.  This configuration will also copy the "Release" build configuration to the "Beta" build configuration for all of the dependent libraries.  The "Debug" and "Release" arrays are both optional.
+This configuration will copy the "Debug" build configuration to the "Staging" and "Preflight" build configurations in all your dependent library projects. This configuration will also copy the "Release" build configuration to the "Beta" build configuration for all of the dependent libraries. The "Debug" and "Release" arrays are both optional.
 
-If your Xcode project is not in the default directory, "ios", you can specify the directory using the optional `projectDirectory` configuration.  The above configuration specifies that the project is in an "iOS" directory instead (directories are case sensitive).
+If your Xcode project is not in the default directory, "ios", you can specify the directory using the optional `projectDirectory` configuration. The above configuration specifies that the project is in an "iOS" directory instead (directories are case sensitive).
 
 You can also pass in settings for each command. The only one currently supported is `fix-script`.
 
 ## What Then?
 
 The package is able to do three things:
+
 - Swap its own version of react-native-xcode.sh in instead of the stock one that assumes all debug schemes are named 'Debug'.
 - Add your build configurations to all library Xcode projects.
 - Hide any schemes that come from your library projects so they don't show up in the menu.
@@ -69,6 +71,7 @@ As long as `react-native-schemes-manager all` has run whenever you add react nat
 ## It's not working!
 
 A good starting point for troubleshooting is:
+
 - Completely quit Xcode.
 - `rm -rf node_modules`
 - `yarn` or `npm i`
@@ -108,7 +111,7 @@ You can then `yarn run fix-xcode` or `npm run fix-xcode` which will run the clea
 
 ## Uninstalling
 
-If you decide this isn't working out for you, we'd love to know why and to try to fix it. Please [open an issue](https://github.com/Thinkmill/react-native-schemes-manager/issues/new).
+If you decide this isn't working out for you, we'd love to know why and to try to fix it. Please [open an issue](https://github.com/thekevinbrown/react-native-schemes-manager/issues/new).
 
 But if you still want to get rid of this and revert the changes to your project, you can follow these steps:
 
