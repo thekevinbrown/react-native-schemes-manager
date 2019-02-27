@@ -33,14 +33,14 @@ module.exports = {
 		return currentPath;
 	},
 	getFilesMatchingGlob (pattern, callback) {
-        // Find all of the files we care about.
+		// Find all of the files we care about.
 		const project = this.getClosestLikelyReactNativeProjectPath();
 		if (!project) return callback(new Error('Unable to find project path.'));
 
 		glob(path.join(project, pattern), { follow: true }, (err, files) => {
 			if (err) return callback(err);
 
-            // Go through each project.
+			// Go through each project.
 			for (const filePath of files) {
 				callback(null, filePath);
 			}
@@ -90,7 +90,7 @@ module.exports = {
 
 		if (!packageJson.xcodeSchemes) {
 			throw new Error(
-				"Please configure schemes on your project. For more information, see https://github.com/thekevinbrown/react-native-schemes-manager/blob/master/README.md"
+				'Please configure schemes on your project. For more information, see https://github.com/thekevinbrown/react-native-schemes-manager/blob/master/README.md'
 			);
 		}
 

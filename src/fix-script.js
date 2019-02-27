@@ -9,12 +9,12 @@ function updateProject (project) {
 	const section = project.hash.project.objects.PBXShellScriptBuildPhase;
 
 	for (const key of Object.keys(section)) {
-        // Look for the React native script.
+		// Look for the React native script.
 		const step = section[key];
 
 		if (step && step.shellScript && step.shellScript.indexOf('react-native-xcode.sh') >= 0) {
-            // Found it!
-            // Need to add our actual mappings to the project.
+			// Found it!
+			// Need to add our actual mappings to the project.
 			const mappings = utilities.getMappings();
 			const configurations = (mappings.Debug || []).join('|');
 			const scriptSettings = (mappings.settings && mappings.settings['fix-script']) || {};
@@ -39,7 +39,7 @@ function updateProject (project) {
 			const newScript = `"${commands.join('\\n')}"`;
 
 			if (step.shellScript === newScript) {
-                // It's already up to date.
+				// It's already up to date.
 				console.log(chalk.gray(` - [fix-script]: ${path.dirname(path.relative(process.cwd(), project.filepath))} skipped`));
 				return false;
 			} else {
