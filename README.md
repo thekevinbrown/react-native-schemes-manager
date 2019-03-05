@@ -124,7 +124,7 @@ But if you still want to get rid of this and revert the changes to your project,
 
 ```
 export NODE_BINARY=node
-../node_modules/react-native/packager/react-native-xcode.sh
+../node_modules/react-native/scripts/react-native-xcode.sh
 ```
 
 Then, you can revert the changes to the installed libraries by:
