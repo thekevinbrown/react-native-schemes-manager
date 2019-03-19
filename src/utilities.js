@@ -37,7 +37,7 @@ module.exports = {
 		const project = this.getClosestLikelyReactNativeProjectPath();
 		if (!project) return callback(new Error('Unable to find project path.'));
 
-		glob(path.join(project, pattern), { follow: true }, (err, files) => {
+		glob(path.join(project, pattern), { follow: false }, (err, files) => {
 			if (err) return callback(err);
 
 			// Go through each project.
