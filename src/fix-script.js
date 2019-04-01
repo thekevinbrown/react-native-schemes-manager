@@ -24,6 +24,7 @@ function updateProject (project) {
 			const devConfigs = `\\"+(${configurations}${configurations.length ? '|' : ''}Debug)\\"`;
 			env.DEVELOPMENT_BUILD_CONFIGURATIONS = devConfigs;
 			env.NODE_BINARY = env.NODE_BINARY || 'node';
+			env.DISABLE_XIP = 1;
 
 			const exports = Object.keys(env)
 				.map((key) => [key, env[key]])
