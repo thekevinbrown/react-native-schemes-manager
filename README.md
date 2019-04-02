@@ -32,7 +32,7 @@ Once the package is installed in your project, you just need to configure it by 
 		"postinstall": "react-native-schemes-manager all"
 	},
 	"xcodeSchemes": {
-		"Debug": ["Staging", "Preflight"],
+		"Debug": ["Staging (Debug)", "Preflight (Debug)"],
 		"Release": ["Beta"],
 		"projectDirectory": "iOS",
 		"settings": {
@@ -78,6 +78,7 @@ A good starting point for troubleshooting is:
 - Re open Xcode
 - Product -> Clean
 - Run
+- Ensure any debug configurations contain the word "Debug"
 
 If you're still having trouble, post an issue so we can look into it.
 
