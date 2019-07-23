@@ -1,11 +1,9 @@
 #!/bin/bash
-# Copyright (c) 2015-present, Facebook, Inc.
-# All rights reserved.
+# Copyright (c) Facebook, Inc. and its affiliates.
 #
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. An additional grant
-# of patent rights can be found in the PATENTS file in the same directory.
-
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
+#
 # Bundle React Native app's code and image assets.
 # This script is supposed to be invoked as part of Xcode build process
 # and relies on environment variables (including PWD) set by Xcode
@@ -59,26 +57,26 @@ eval 'case "$CONFIGURATION" in
     ;;
 esac'
 
-if [ $? -ne 0 ]; then
-    echo "error: Failed determining valid build configuration." >&2
-    exit 1
-fi
-
 # Path to react-native folder inside node_modules
 REACT_NATIVE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../react-native" && pwd)"
 SCHEMES_MANAGER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# The project should be located next to where react-native is installed
+# in node_modules.
+PROJECT_ROOT=${PROJECT_ROOT:-"$REACT_NATIVE_DIR/../.."}
 
-# Xcode project file for React Native apps is located in ios/ subfolder
-cd ..
+cd "$PROJECT_ROOT" || exit
 
 # Define NVM_DIR and source the nvm.sh setup script
 [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
 
 # Define entry file
-if [[ -s "index.ios.js" ]]; then
-  ENTRY_FILE=${1:-index.ios.js}
-else
-  ENTRY_FILE=${1:-index.js}
+if [[ "$ENTRY_FILE" ]]; then
+  # Use ENTRY_FILE defined by user
+  :
+elif [[ -s "index.ios.js" ]]; then
+   ENTRY_FILE=${1:-index.ios.js}
+ else
+   ENTRY_FILE=${1:-index.js}
 fi
 
 if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
@@ -90,40 +88,37 @@ fi
 # Set up the nodenv node version manager if present
 if [[ -x "$HOME/.nodenv/bin/nodenv" ]]; then
   eval "$("$HOME/.nodenv/bin/nodenv" init -)"
+elif [[ -x "$(command -v brew)" && -x "$(brew --prefix nodenv)/bin/nodenv" ]]; then
+  eval "$("$(brew --prefix nodenv)/bin/nodenv" init -)"
 fi
 
-[ -z "$NODE_BINARY" ] && export NODE_BINARY="node"
+# Set up the ndenv of anyenv if preset
+if [[ ! -x node && -d ${HOME}/.anyenv/bin ]]; then
+  export PATH=${HOME}/.anyenv/bin:${PATH}
+  if [[ "$(anyenv envs | grep -c ndenv )" -eq 1 ]]; then
+    eval "$(anyenv init -)"
+  fi
+fi
 
-[ -z "$CLI_PATH" ] && export CLI_PATH="$REACT_NATIVE_DIR/local-cli/cli.js"
+# check and assign NODE_BINARY env
+# shellcheck source=/dev/null
+source "$REACT_NATIVE_DIR/scripts/node-binary.sh"
+
+[ -z "$NODE_ARGS" ] && export NODE_ARGS=""
+
+[ -z "$CLI_PATH" ] && export CLI_PATH="$REACT_NATIVE_DIR/cli.js"
 
 [ -z "$BUNDLE_COMMAND" ] && BUNDLE_COMMAND="bundle"
 
 if [[ -z "$BUNDLE_CONFIG" ]]; then
   CONFIG_ARG=""
 else
-  CONFIG_ARG="--config $(pwd)/$BUNDLE_CONFIG"
-fi
-
-nodejs_not_found()
-{
-  echo "error: Can't find '$NODE_BINARY' binary to build React Native bundle" >&2
-  echo "If you have non-standard nodejs installation, select your project in Xcode," >&2
-  echo "find 'Build Phases' - 'Bundle React Native code and images'" >&2
-  echo "and change NODE_BINARY to absolute path to your node executable" >&2
-  echo "(you can find it by invoking 'which node' in the terminal)" >&2
-  exit 2
-}
-
-type $NODE_BINARY >/dev/null 2>&1 || nodejs_not_found
-
-if [ $? -ne 0 ]; then
-    echo "error: failing determining if plist changes were required." >&2
-    exit 1
+  CONFIG_ARG="--config $BUNDLE_CONFIG"
 fi
 
 BUNDLE_FILE="$DEST/main.jsbundle"
 
-$NODE_BINARY "$CLI_PATH" $BUNDLE_COMMAND \
+"$NODE_BINARY" $NODE_ARGS "$CLI_PATH" $BUNDLE_COMMAND \
   $CONFIG_ARG \
   --entry-file "$ENTRY_FILE" \
   --platform ios \
@@ -131,7 +126,7 @@ $NODE_BINARY "$CLI_PATH" $BUNDLE_COMMAND \
   --reset-cache \
   --bundle-output "$BUNDLE_FILE" \
   --assets-dest "$DEST" \
-	$EXTRA_PACKAGER_ARGS
+  $EXTRA_PACKAGER_ARGS
 
 # XCode randomly generates user specific workspace files whenever it feels like it.
 # We want these hidden at all times, so go ahead and clean up if they're showing now.
