@@ -40,16 +40,16 @@ function updateProject (project) {
 				const sourceConfigs = project.getBuildConfigByName(sourceBuildConfig);
 
 				// Handle cases where some configurations are missing, e.g. RCTWebSocket does not have a 'Release' config
-				let hasError = false
-				
+				let hasError = false;
+
 				// There are actually multiple of the same configs spread across multiple lists. Clone them all to the destination build configs.
 				for (const key of Object.keys(sourceConfigs)) {
 					const sourceConfig = sourceConfigs[key];
 					const configList = configListForConfig(configLists, key);
 
 					if (!configList) {
-						hasError = true
-						continue
+						hasError = true;
+						continue;
 					}
 
 					// Copy that bad boy.
