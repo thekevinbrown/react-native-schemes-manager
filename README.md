@@ -58,6 +58,17 @@ If your Xcode project is not in the default directory, "ios", you can specify th
 
 You can also pass in settings for each command. The only one currently supported is `fix-script`.
 
+At the top of the `Podfile` add the project's custom build configuration with the created schemes. This step ensures your schemes carry over the correct debug and release setups:
+
+```Ruby
+project 'YourAwesomeApp',
+  'Staging' => :debug,
+  'Preflight' => :debug,
+  'Beta' => :release
+```
+
+Run `pod install` and it should be good to go.
+
 ## What Then?
 
 The package is able to do three things:
