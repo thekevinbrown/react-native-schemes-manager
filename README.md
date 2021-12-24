@@ -1,5 +1,7 @@
 # React Native Schemes Manager
 
+> ⚠️ This package is no longer necessary since `react-native` version `0.60` or above. React Native now supports the schemes correctly without any workaround.
+
 Now you can use Xcode build configurations / schemes with React Native without pulling your hair out.
 
 [![Build Status](https://travis-ci.org/thekevinbrown/react-native-schemes-manager.svg?branch=master)](https://travis-ci.org/thekevinbrown/react-native-schemes-manager)
