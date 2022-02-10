@@ -36,7 +36,7 @@ function updateProject (project) {
 				runCommand,
 			];
 
-			const newScript = `"${commands.join('\\n')}"`;
+			const newScript = `"${commands.join('\\n')}\n"`;
 
 			if (step.shellScript === newScript) {
 				// It's already up to date.
