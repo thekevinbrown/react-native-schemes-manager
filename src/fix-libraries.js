@@ -39,12 +39,18 @@ function updateProject (project) {
 				// Ok, we need to create our clone of the build configs they've asked for and add it to the config lists.
 				const sourceConfigs = project.getBuildConfigByName(sourceBuildConfig);
 
+				// Handle cases where some configurations are missing, e.g. RCTWebSocket does not have a 'Release' config
+				let hasError = false;
+
 				// There are actually multiple of the same configs spread across multiple lists. Clone them all to the destination build configs.
 				for (const key of Object.keys(sourceConfigs)) {
 					const sourceConfig = sourceConfigs[key];
 					const configList = configListForConfig(configLists, key);
 
-					if (!configList) throw new Error(`Unable to find config list for build configuration: ${sourceConfig.name}`);
+					if (!configList) {
+						hasError = true;
+						continue;
+					}
 
 					// Copy that bad boy.
 					const clone = JSON.parse(JSON.stringify(sourceConfig));
@@ -58,7 +64,11 @@ function updateProject (project) {
 					configList.buildConfigurations.push({ value: configurationUuid, comment: destinationBuildConfig });
 				}
 
-				console.log(chalk.gray(` ${chalk.green('✔')} [fix-libraries]: ${chalk.green(sourceBuildConfig + ' -> ' + destinationBuildConfig + ' created')} in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
+				if (hasError) {
+					console.log(chalk.gray(` ${chalk.red('✗')} [fix-libraries]: ${chalk.red(sourceBuildConfig + ' -> ' + destinationBuildConfig + ' failed')}  in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
+				} else {
+					console.log(chalk.gray(` ${chalk.green('✔')} [fix-libraries]: ${chalk.green(sourceBuildConfig + ' -> ' + destinationBuildConfig + ' created')} in ${path.dirname(path.relative(process.cwd(), project.filepath))}`));
+				}
 
 				changed = true;
 			} else {
